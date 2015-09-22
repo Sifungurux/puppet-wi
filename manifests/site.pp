@@ -1,3 +1,3 @@
-#testing
+#testing 2
 
-import 'test.pp'
+import 'wi.pp'
