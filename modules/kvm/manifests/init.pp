@@ -1,4 +1,7 @@
 class kvm(
+		$kvm_user = 'kvmadmin',
+		$password = '$6$Ze/Np16u$VpKLYqxIKfB0MVjJ5X3mPV5sZR6ZXrH2SsqXJSXtVyKfgzNv/bBb2lv71I.mD6k7Es8YXM9QpHbQ4lxYWR/9Q1',
+		$shell = '/bin/bash',
 		$address = '192.168.20.80',
 		$netmask = '255.255.255.0',
 		$network = '192.168.20.0',
@@ -6,25 +9,24 @@ class kvm(
 		$gateway = '192.168.20.1',
 		$interface = 'eth0',
 		$dns = '8.8.8.8',
-		){
+		)
+{
 		
 	exec { "apt-get update":
         command => "/usr/bin/apt-get update -qq",
         }
-	$kvm_packages = ["qemu-kvm","libvirt-bin","bridge-utils"]
-	$kvm_user = 'kvmadmin'
-	$kvm_user_pass = "$6$Ze/Np16u$VpKLYqxIKfB0MVjJ5X3mPV5sZR6ZXrH2SsqXJSXtVyKfgzNv/bBb2lv71I.mD6k7Es8YXM9QpHbQ4lxYWR/9Q1"
+	$kvm_packages = ["qemu-kvm","libvirt-bin","bridge-utils","virtinst"]
 	
 	package { $kvm_packages:
-	ensure => installed,
+		ensure 			=> installed,
 	}
 	user { $kvm_user :
 		ensure        	=> present,
         managehome    	=> true,
         groups        	=> [ 'kvm', 'libvirt' ],
-        shell         	=> "/bin/bash",
-        password      	=> $kvm_user_pass,
-		require			=> Package["qemu-kvm","libvirt-bin","bridge-utils"],
+        shell         	=> $shell,
+        password      	=> $password,
+		before			=> Exec['addbr'],
         }
 
 	#setting up brigde interface
@@ -48,8 +50,9 @@ class kvm(
 		require			=> Exec['addif'],
         }
 	
-		exec { "ifdown/ifup":
-		command 		=> '/etc/init.d/networking restart',
+	exec {"ifdown/ifup":
+		command 		=> 'reboot',
+		path			=> "/sbin/",
 		require 		=> File['/etc/network/interfaces'],
 	}
 }
