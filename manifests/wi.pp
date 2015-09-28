@@ -1,28 +1,19 @@
 node wi1 {
-     # class {'kvm':
-		# address 	=> '192.168.20.80',
-		# netmask 	=> '255.255.255.0',
-		# network 	=> '192.168.20.0',
-		# broadcast 	=> '192.168.20.255',
-		# gateway 	=> '192.168.20.1',
-		# interface 	=> 'eth0',
-		# dns 		=> '8.8.8.8',
-		# kvm_user	=> 'test',
-		# }
-		Exec {
-  path => ["/usr/bin", "/bin", "/usr/sbin", "/sbin", "/usr/local/bin", "/usr/local/sbin"]
-		}
+  
+  $rootPass = 'M@cca9091'
+  
+  class { 'apache':  }
 
-	include lamp::apache
-	include lamp::php
-# default root password is 'password'
-	include lamp::mysql
-	include lamp::phpmyadmin
-
-	exec {"apt-get update":
-	command => "apt-get update"
-	}
+  class {'mysql::server':
+    root_password   => 'M@cca9091',
+ #   override_options => { 'client' => { 'user' => 'root', password => 'M@cca9091' }  },
+    }
+    
+    
+  wi::webstudent { 'student1': host => 'wi1', pass => '1234', students_grants => [ 'SELECT', 'UPDATE' ],}
+  #wi::webstudent { 'student2':}
 }
+
 
 
 

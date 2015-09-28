@@ -1,2 +1,6 @@
 /modules/stdlib/
 /modules/lamp/
+/modules/apache/
+/modules/concat/
+/modules/mysql/
+/modules/staging/
