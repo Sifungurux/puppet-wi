@@ -16,7 +16,7 @@ define wi::webstudent(
     managehome    => true,
     groups        => [ $name, 'admin' ],
     shell         => "/bin/bash",
-    password      => $pass,
+    password      => pw_hash($pass, 'SHA-512', 'Macca'),
     require       => Group['admin'],
     }
     
