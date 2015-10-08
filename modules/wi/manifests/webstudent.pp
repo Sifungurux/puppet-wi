@@ -6,7 +6,7 @@ define wi::webstudent(
   group { $name :
     ensure        => present,
     }
-  group { 'admin' :
+  group { 'sftp' :
     ensure        => present,
     require       => Group[ $name],
     }
@@ -14,17 +14,17 @@ define wi::webstudent(
   user { $name :
     ensure        => present,
     managehome    => true,
-    groups        => [ $name, 'admin' ],
+    groups        => [ $name, 'sftp' ],
     shell         => "/bin/bash",
     password      => pw_hash($pass, 'SHA-512', 'Macca'),
-    require       => Group['admin'],
+    require       => Group['sftp'],
     }
     
   file { "/home/${$name}":
     ensure        => directory,
     recurse       => true,
     owner         => $name,
-    group         => $name,
+    group         => 'sftp',
     mode          => '0644',
     require       => User[$name],
     }
@@ -49,14 +49,4 @@ define wi::webstudent(
     grant         => $students_grants,
   }
   
-  phpmyadmin::server{ 'default': }
-
-  phpmyadmin::vhost { 'wi1.kirk.local':
-    vhost_enabled => true,
-    priority      => '20',
-    docroot       => $phpmyadmin::params::doc_path,
-    ssl           => false,
-    #ssl_cert      => 'puppet:///modules/phpmyadmin/sslkey/internal.domain.net.crt',
-    #ssl_key       => 'puppet:///modules/phpmyadmin/sslkey/internal.domain.net.private.key',
-  }
 }

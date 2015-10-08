@@ -1,6 +1,6 @@
 node wi1 {
   
-  $rootPass = 'M@cca9091'
+  
  
 	class { 'wi':  }
  
