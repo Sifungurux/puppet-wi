@@ -5,4 +5,9 @@
 /modules/mysql/
 /modules/staging/
 /modules/phpmyadmin/
+/modules/kvm/
+
 /files/
+hiera.yaml
+/hiearadata
+
