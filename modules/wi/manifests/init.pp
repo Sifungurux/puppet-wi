@@ -1,7 +1,8 @@
 #Manage webintergrates web development
 class wi  (
-    $rootPass   = 'm@cca9091',
-    $sftp_group = 'sftp',
+    $rootPass,
+    $group,
+    $vhost_root_dir,
 	){
 # dependencies
 # puppetlabs-apache
@@ -10,6 +11,24 @@ class wi  (
 # puppetlabs-stdlib
 
 # Install these modules prier to to implement this module
+    group {$group:
+      ensure        => present,
+      }
+
+  file { "/${vhost_root_dir}":
+    ensure => "directory",
+  }  
+  
+  file { "/${vhost_root_dir}/${group[0]}":
+    ensure => "directory",
+    require   => File["/${vhost_root_dir}"],
+    }
+
+  file { "/${vhost_root_dir}/${group[1]}":
+    ensure => "directory",
+    require   => File["/${vhost_root_dir}"],
+    }
+    
 	class { 'apache': mpm_module => 'prefork',}
 	class {'mysql::server':
 		root_password 	  => 'M@cca9091',
@@ -17,8 +36,10 @@ class wi  (
 	}
 	class { 'phpmyadmin': } 
   
-	$php = [ "php5-cli", "libapache2-mod-php5", "php5-common", "php5-mysql", "php5-curl" ]
-	package { $php: } 
+	$php = [ "php5", "php5-cli", "libapache2-mod-php5", "php5-common", "php5-mysql", "php5-curl" ]
+	package { $php :
+	   ensure => "installed", 
+  } 
 	include apache::mod::php
 
 	file_line { 'listen':
@@ -56,12 +77,11 @@ class wi  (
 		content 		=> template('wi/wi_sshd_config.erb'),
 		order   		=> 01,
 	}
-	concat::fragment{'sftp':
-		target  		=> 	'/etc/ssh/sshd_config',
-		content			=>	template('wi/sftp_grp_match.erb'),
-		order			=>	02,
-	}
-
+    concat::fragment{ 'sftp' :
+    target      =>  '/etc/ssh/sshd_config',
+    content     =>  template('wi/sftp_grp_match.erb'),
+    order     =>  02,
+  }
 }
           
 

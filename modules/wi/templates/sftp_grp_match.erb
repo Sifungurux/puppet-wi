@@ -1,3 +1,5 @@
-Match Group <%= @sftp_group %>
-		ChrootDirectory <%= @dsftp_directory %>
-		ForceCommand internal-sftpS
+<% @group.each do |val| -%>
+Match Group <%= val %>
+	ChrootDirectory /<%= @vhost_root_dir %>/<%= val %>/%u
+	ForceCommand internal-sftp
+<% end -%>
