@@ -1,8 +1,0 @@
-kvm_packages:
- - 'qemu-kvm'
- - 'libvirt-bin'
- - 'bridge-utils'
- 
-kvm_user:
- - username: 'kvmadmin'
-   password: '$6$saltsalt$/alWecYH7Ry7BmdtYwV3ObFkYwJ96i4$'

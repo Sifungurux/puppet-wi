@@ -1,4 +1,0 @@
-mysql_packages: 
-  - 'mysql'
-  - 'mysql-clients'
-  - 'mysql-server'

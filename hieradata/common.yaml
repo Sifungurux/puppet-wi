@@ -1,5 +1,0 @@
-kvm_packages:
- - 'qemu-kvm'
- - 'libvirt-bin'
- - 'bridge-utils'
- 
