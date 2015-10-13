@@ -3,14 +3,14 @@ define wi::add_db (
     $dbpass
     ){
   
-  mysql::db { "${name}.1":
+  mysql::db { "${name}_1":
     user          => $name,
     password      => $dbpass,
     host          => 'localhost',
     grant         => $dbpriv,
   }
 
-  mysql::db { "${name}.2":
+  mysql::db { "${name}_2":
     user          => $name,
     password      => $dbpass,
     host          => 'localhost',
