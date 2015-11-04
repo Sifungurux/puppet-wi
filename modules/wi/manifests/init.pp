@@ -14,7 +14,11 @@ class wi  (
     group {$group:
       ensure        => present,
       }
-
+###########################################################
+#                                                         #
+#         Creation of directory structor                  #
+#                                                         #
+###########################################################
   file { "/${vhost_root_dir}":
     ensure => "directory",
   }  
@@ -29,17 +33,19 @@ class wi  (
     require   => File["/${vhost_root_dir}"],
     }
     
-	class { 'apache': mpm_module => 'prefork',}
-	class {'mysql::server':
-		root_password 	  => 'M@cca9091',
-		override_options  => { 'client' => { 'user' => 'root', password => 'M@cca9091' } },
-	}
-	class { 'phpmyadmin': } 
+ ###########################################################  
+	 class {'mysql::server':
+      root_password 	  => 'M@cca9091',
+		  override_options  => { 'client' => { 'user' => 'root', password => 'M@cca9091' } },
+		  }
+   class { 'phpmyadmin': } 
   
-	$php = [ "php5", "php5-cli", "libapache2-mod-php5", "php5-common", "php5-mysql", "php5-curl" ]
-	package { $php :
+	 $php = [ "php5", "php5-cli", "libapache2-mod-php5", "php5-common", "php5-mysql", "php5-curl" ]
+	 package { $php :
 	   ensure => "installed", 
-  } 
+    } 
+    
+  class { 'apache': mpm_module => 'prefork',}
 	include apache::mod::php
 
 	file_line { 'listen':
