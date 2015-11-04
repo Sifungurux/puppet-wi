@@ -1,8 +1,5 @@
 define  wi::add_user ( $user_pass, $group ){      
  
-    group { $name :
-      ensure        => present,
-      }
    file { "/wi/${group}/${$name}":
       ensure        => directory,
       recurse       => true,
@@ -15,7 +12,7 @@ define  wi::add_user ( $user_pass, $group ){
       ensure        => directory,
       recurse       => true,
       owner         => $name,
-      group         => $name,
+      group         => $group,
       mode          => '0755',
       require       => User[$name],
       }
@@ -24,7 +21,7 @@ define  wi::add_user ( $user_pass, $group ){
       ensure        => present,
       home          => "/web",
       managehome    => true,
-      groups        => [ $name, $group ],
+      groups        => $group,
       shell         => "/usr/sbin/nologin",
       password      => pw_hash($user_pass, 'SHA-512', 'Macca'),
       #require       => File["/wi/${sftp_group}/${$name}/web"],
