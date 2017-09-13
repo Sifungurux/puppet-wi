@@ -1,0 +1,15 @@
+{
+  "name": "puppet-wi",
+  "version": "0.1.0",
+  "author": "Jonas Kirk Pedersen",
+  "summary": "Webintergrator module to create vhost, db and sftp setup for students",
+  "license": "Apache-2.0",
+  "source": "https://github.com/Sifungurux/puppet-wi",
+  "project_page": "https://github.com/Sifungurux/puppet-wi",
+  "issues_url": "https://github.com/Sifungurux/puppet-wi/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ],
+  "data_provider": null
+}
+
